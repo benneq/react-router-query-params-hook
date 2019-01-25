@@ -50,3 +50,18 @@ export const MyComponent: React.FunctionComponent<Props> = (props) => {
     )
 };
 ```
+
+### Options
+You can call `setParams` with an optional options object:
+```ts
+const [params, setParams] = useQueryParams(deserializer, serializer);
+
+// When using `keepUrl` the Browser URL won't update
+setParams(newParams, { keepUrl: true });
+
+// When using `force` it will trigger a state change, even if old and new params are the same
+setParams(newParams, { force: true });
+```
+
+## Todo
+- `merge` option
