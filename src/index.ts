@@ -15,15 +15,17 @@ interface UpdateStateOptions {
 
 export const useQueryParamsFactory = <T>(
     parseQueryStringFn: (queryString: string) => T,
-    formatQueryStringFn: (params: T) => string
+    formatQueryStringFn: (params: T) => string,
+    factoryDefaultOptions?: UpdateStateOptions
 ) => {
     return <P>(
         deserializeFn: (params: T) => P,
-        serializeFn: (params: P) => T
+        serializeFn: (params: P) => T,
+        defaultOptions?: UpdateStateOptions
     ): [P, (val: P, options?: UpdateStateOptions) => void] => {
         const routerContext = useContext(__RouterContext);
         const queryString = routerContext.location.search;
-
+        
         const queryStringToParams = (queryString: string) => {
             return deserializeFn(parseQueryStringFn(queryString));
         };
@@ -40,7 +42,8 @@ export const useQueryParamsFactory = <T>(
             updateState(params, { keepUrl: true });
         }, [queryString]);
 
-        const updateState = (params: P, { keepUrl, force, push }: UpdateStateOptions = {}) => {
+        const updateState = (params: P, options?: UpdateStateOptions) => {
+            const { keepUrl, force, push }: UpdateStateOptions = {...factoryDefaultOptions, ...defaultOptions, ...options};
             const formatted = paramsToQueryString(params);
     
             if(force || normalizedQueryString !== formatted) {
@@ -49,6 +52,7 @@ export const useQueryParamsFactory = <T>(
                 if(!keepUrl) {
                     const location = { search: formatted };
                     const history = routerContext.history;
+                    
                     if(push) {
                         history.push(location);
                     } else {

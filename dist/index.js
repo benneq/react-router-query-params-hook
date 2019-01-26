@@ -1,8 +1,19 @@
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 import { useState, useEffect, useContext } from 'react';
 import * as Router from 'react-router';
 var __RouterContext = Router.__RouterContext;
-export var useQueryParamsFactory = function (parseQueryStringFn, formatQueryStringFn) {
-    return function (deserializeFn, serializeFn) {
+export var useQueryParamsFactory = function (parseQueryStringFn, formatQueryStringFn, factoryDefaultOptions) {
+    return function (deserializeFn, serializeFn, defaultOptions) {
         var routerContext = useContext(__RouterContext);
         var queryString = routerContext.location.search;
         var queryStringToParams = function (queryString) {
@@ -17,8 +28,8 @@ export var useQueryParamsFactory = function (parseQueryStringFn, formatQueryStri
             var params = queryStringToParams(queryString);
             updateState(params, { keepUrl: true });
         }, [queryString]);
-        var updateState = function (params, _a) {
-            var _b = _a === void 0 ? {} : _a, keepUrl = _b.keepUrl, force = _b.force, push = _b.push;
+        var updateState = function (params, options) {
+            var _a = __assign({}, factoryDefaultOptions, defaultOptions, options), keepUrl = _a.keepUrl, force = _a.force, push = _a.push;
             var formatted = paramsToQueryString(params);
             if (force || normalizedQueryString !== formatted) {
                 setParams(params);
