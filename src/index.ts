@@ -7,6 +7,7 @@ const __RouterContext = (Router as any).__RouterContext as Context<Router.RouteC
 interface UpdateStateOptions {
     keepUrl?: boolean
     force?: boolean
+    push?: boolean
     // merge?: boolean
 }
 
@@ -39,16 +40,20 @@ export const useQueryParamsFactory = <T>(
             updateState(params, { keepUrl: true });
         }, [queryString]);
 
-        const updateState = (params: P, { keepUrl, force }: UpdateStateOptions = {}) => {
+        const updateState = (params: P, { keepUrl, force, push }: UpdateStateOptions = {}) => {
             const formatted = paramsToQueryString(params);
     
             if(force || normalizedQueryString !== formatted) {
                 setParams(params);
                 setNormalizedQueryString(formatted);
                 if(!keepUrl) {
-                    routerContext.history.replace({
-                        search: formatted
-                    });
+                    const location = { search: formatted };
+                    const history = routerContext.history;
+                    if(push) {
+                        history.push(location);
+                    } else {
+                        history.replace(location);
+                    }
                 }
             }
         };

@@ -18,15 +18,20 @@ export var useQueryParamsFactory = function (parseQueryStringFn, formatQueryStri
             updateState(params, { keepUrl: true });
         }, [queryString]);
         var updateState = function (params, _a) {
-            var _b = _a === void 0 ? {} : _a, keepUrl = _b.keepUrl, force = _b.force;
+            var _b = _a === void 0 ? {} : _a, keepUrl = _b.keepUrl, force = _b.force, push = _b.push;
             var formatted = paramsToQueryString(params);
             if (force || normalizedQueryString !== formatted) {
                 setParams(params);
                 setNormalizedQueryString(formatted);
                 if (!keepUrl) {
-                    routerContext.history.replace({
-                        search: formatted
-                    });
+                    var location_1 = { search: formatted };
+                    var history_1 = routerContext.history;
+                    if (push) {
+                        history_1.push(location_1);
+                    }
+                    else {
+                        history_1.replace(location_1);
+                    }
                 }
             }
         };

@@ -61,6 +61,9 @@ setParams(newParams, { keepUrl: true });
 
 // When using `force` it will trigger a state change, even if old and new params are the same
 setParams(newParams, { force: true });
+
+// When using `push` it will push a new state to browser history, instead of replace (default)
+setParams(newParams, { push: true });
 ```
 
 ## Todo
