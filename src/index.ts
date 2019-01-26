@@ -1,6 +1,6 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, Context } from 'react';
 import * as Router from 'react-router';
-const __RouterContext = (Router as any).__RouterContext;
+const __RouterContext = (Router as any).__RouterContext as Context<Router.RouteComponentProps>;
 
 
 
@@ -20,7 +20,7 @@ export const useQueryParamsFactory = <T>(
         deserializeFn: (params: T) => P,
         serializeFn: (params: P) => T
     ): [P, (val: P, options?: UpdateStateOptions) => void] => {
-        const routerContext = useContext<any>(__RouterContext);
+        const routerContext = useContext(__RouterContext);
         const queryString = routerContext.location.search;
 
         const queryStringToParams = (queryString: string) => {
