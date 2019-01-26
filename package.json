@@ -12,7 +12,11 @@
     "type": "git",
     "url": "git+https://benneq@github.com/benneq/react-router-query-params-hook.git"
   },
-  "keywords": [],
+  "keywords": [
+    "react",
+    "react-dom",
+    "react-router"
+  ],
   "author": "Benjamin Makus (https://github.com/benneq)",
   "license": "MIT",
   "bugs": {

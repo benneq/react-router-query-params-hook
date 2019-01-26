@@ -1,18 +1,9 @@
-"use strict";
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var react_1 = require("react");
-var Router = __importStar(require("react-router"));
+import { useState, useEffect, useContext } from 'react';
+import * as Router from 'react-router';
 var __RouterContext = Router.__RouterContext;
-exports.useQueryParamsFactory = function (parseQueryStringFn, formatQueryStringFn) {
+export var useQueryParamsFactory = function (parseQueryStringFn, formatQueryStringFn) {
     return function (deserializeFn, serializeFn) {
-        var routerContext = react_1.useContext(__RouterContext);
+        var routerContext = useContext(__RouterContext);
         var queryString = routerContext.location.search;
         var queryStringToParams = function (queryString) {
             return deserializeFn(parseQueryStringFn(queryString));
@@ -20,9 +11,9 @@ exports.useQueryParamsFactory = function (parseQueryStringFn, formatQueryStringF
         var paramsToQueryString = function (params) {
             return formatQueryStringFn(serializeFn(params));
         };
-        var _a = react_1.useState(function () { return queryStringToParams(queryString); }), params = _a[0], setParams = _a[1];
-        var _b = react_1.useState(function () { return paramsToQueryString(params); }), normalizedQueryString = _b[0], setNormalizedQueryString = _b[1];
-        react_1.useEffect(function () {
+        var _a = useState(function () { return queryStringToParams(queryString); }), params = _a[0], setParams = _a[1];
+        var _b = useState(function () { return paramsToQueryString(params); }), normalizedQueryString = _b[0], setNormalizedQueryString = _b[1];
+        useEffect(function () {
             var params = queryStringToParams(queryString);
             updateState(params, { keepUrl: true });
         }, [queryString]);
