@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, Context } from 'react';
+import { useState, useEffect, useCallback, useContext, Context } from 'react';
 import * as Router from 'react-router';
 const __RouterContext = (Router as any).__RouterContext as Context<Router.RouteComponentProps>;
 
@@ -42,7 +42,7 @@ export const useQueryParamsFactory = <T>(
             updateState(params, { keepUrl: true });
         }, [queryString]);
 
-        const updateState = (params: P, options?: UpdateStateOptions) => {
+        const updateState = useCallback((params: P, options?: UpdateStateOptions) => {
             const { keepUrl, force, push }: UpdateStateOptions = {...factoryDefaultOptions, ...defaultOptions, ...options};
             const formatted = paramsToQueryString(params);
     
@@ -60,7 +60,7 @@ export const useQueryParamsFactory = <T>(
                     }
                 }
             }
-        };
+        }, [normalizedQueryString, routerContext.history]);
 
         return [params, updateState];
     }

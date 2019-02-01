@@ -9,7 +9,7 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useCallback, useContext } from 'react';
 import * as Router from 'react-router';
 var __RouterContext = Router.__RouterContext;
 export var useQueryParamsFactory = function (parseQueryStringFn, formatQueryStringFn, factoryDefaultOptions) {
@@ -28,7 +28,7 @@ export var useQueryParamsFactory = function (parseQueryStringFn, formatQueryStri
             var params = queryStringToParams(queryString);
             updateState(params, { keepUrl: true });
         }, [queryString]);
-        var updateState = function (params, options) {
+        var updateState = useCallback(function (params, options) {
             var _a = __assign({}, factoryDefaultOptions, defaultOptions, options), keepUrl = _a.keepUrl, force = _a.force, push = _a.push;
             var formatted = paramsToQueryString(params);
             if (force || normalizedQueryString !== formatted) {
@@ -45,7 +45,7 @@ export var useQueryParamsFactory = function (parseQueryStringFn, formatQueryStri
                     }
                 }
             }
-        };
+        }, [normalizedQueryString, routerContext.history]);
         return [params, updateState];
     };
 };

@@ -1,6 +1,6 @@
 {
   "name": "react-router-query-params-hook",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "React Hook for React Router for De-/Serializing query params",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
